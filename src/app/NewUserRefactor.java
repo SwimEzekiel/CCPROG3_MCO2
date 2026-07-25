@@ -1,7 +1,7 @@
 package app;
 
-import controllers.LoginController;
-import controllers.MenuController;
+import modelControllers.LoginController;
+import modelControllers.MenuController;
 import models.Display;
 import models.User;
 import services.UserService;

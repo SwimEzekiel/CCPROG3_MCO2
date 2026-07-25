@@ -1,4 +1,4 @@
-package controllers;
+package modelControllers;
 
 import models.TVSeries;
 import models.Episodes;

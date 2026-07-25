@@ -1,9 +1,8 @@
-package controllers;
+package modelControllers;
 
 import models.Display;
 import models.User;
 import views.CreditsView;
-import views.LoginView;
 import views.MenuView;
 
 public class MenuController {

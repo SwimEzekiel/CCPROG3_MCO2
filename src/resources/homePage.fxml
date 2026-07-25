@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #545454;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlControllers.HomeController">
+   <children>
+      <MenuBar fx:id="menu" layoutY="1.0" prefHeight="25.0" prefWidth="600.0" style="-fx-background-color: #636B2F; -fx-text-fill: #FFFFFF;" stylesheets="@menuBar.css">
+        <menus>
+          <Menu mnemonicParsing="false" text="User">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#login" text="Login" />
+                  <MenuItem mnemonicParsing="false" text="Logout" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" style="-fx-text-fill: #FFFFFF;" text="Add">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Add a Card Game" />
+                  <MenuItem mnemonicParsing="false" text="Add a TV Series" />
+                  <MenuItem mnemonicParsing="false" text="Add a Website" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="View">
+               <items>
+                  <CheckMenuItem mnemonicParsing="false" text="Show card games" />
+                  <CheckMenuItem mnemonicParsing="false" text="Show TV series" />
+                  <CheckMenuItem mnemonicParsing="false" text="Show websites" />
+               </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Share">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Import collection" />
+                  <MenuItem mnemonicParsing="false" text="Export collection" />
+              </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+      <ListView layoutX="21.0" layoutY="52.0" prefHeight="329.0" prefWidth="557.0" style="-fx-background-color: #B4B4B4;" />
+   </children>
+</AnchorPane>
