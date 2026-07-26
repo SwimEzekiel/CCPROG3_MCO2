@@ -39,6 +39,6 @@
             </Menu>
         </menus>
       </MenuBar>
-      <ListView layoutX="21.0" layoutY="52.0" prefHeight="329.0" prefWidth="557.0" style="-fx-background-color: #B4B4B4;" />
+      <ListView fx:id="collectionList" layoutX="21.0" layoutY="52.0" prefHeight="329.0" prefWidth="557.0" style="-fx-background-color: #B4B4B4;" styleClass="collection-list" stylesheets="@listView.css" />
    </children>
 </AnchorPane>
