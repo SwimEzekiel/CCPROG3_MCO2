@@ -17,21 +17,24 @@ import java.util.ResourceBundle;
 
 public class HomeController implements Initializable {
 
+    // FXML Injections
     @FXML
     private ListView<String> collectionList;
 
-    private FXMLLoader fxmlLoader;
+    // Other windows
+    private FXMLLoader loader;
     private Scene loginScene;
     private Stage loginStage;
 
+    // Attributes
     private String cur;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Prepare login screen
-        fxmlLoader = new FXMLLoader(MyApp.class.getResource("/login.fxml"));
+        loader = new FXMLLoader(MyApp.class.getResource("/login.fxml"));
         try {
-            loginScene = new Scene(fxmlLoader.load());
+            loginScene = new Scene(loader.load());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -53,16 +56,16 @@ public class HomeController implements Initializable {
 
                 Scene viewEntryScene;
                 Stage viewEntryStage;
-                fxmlLoader.setRoot(null);
-                fxmlLoader.setController(null);
-                fxmlLoader.setLocation(MyApp.class.getResource("/viewEntry.fxml"));
+                loader.setRoot(null);
+                loader.setController(null);
+                loader.setLocation(MyApp.class.getResource("/viewEntry.fxml"));
                 try {
-                    viewEntryScene = new Scene(fxmlLoader.load());
+                    viewEntryScene = new Scene(loader.load());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
                 viewEntryStage = new Stage();
-                EntryController entry = fxmlLoader.getController();
+                EntryController entry = loader.getController();
                 entry.setTitle(cur);
                 viewEntryStage.setTitle("Detailed View");
                 viewEntryStage.setScene(viewEntryScene);
@@ -73,5 +76,18 @@ public class HomeController implements Initializable {
 
     public void login(){
         loginStage.showAndWait();
+    }
+    public void openExport() throws IOException{
+        Scene exportScene;
+        Stage exportStage = new Stage();
+
+        loader.setRoot(null);
+        loader.setController(null);
+        loader.setLocation(MyApp.class.getResource("/export.fxml"));
+        exportScene = new Scene(loader.load());
+        exportStage.initModality(Modality.APPLICATION_MODAL);
+        exportStage.setScene(exportScene);
+        exportStage.setTitle("Exporting...");
+        exportStage.show();
     }
 }
