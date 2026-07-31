@@ -33,7 +33,7 @@
           </Menu>
             <Menu mnemonicParsing="false" text="Share">
               <items>
-                <MenuItem mnemonicParsing="false" text="Import collection" />
+                <MenuItem mnemonicParsing="false" onAction="#openImport" text="Import collection" />
                   <MenuItem mnemonicParsing="false" onAction="#openExport" text="Export collection" />
               </items>
             </Menu>

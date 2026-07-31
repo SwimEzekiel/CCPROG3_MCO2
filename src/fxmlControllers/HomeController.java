@@ -22,7 +22,7 @@ public class HomeController implements Initializable {
     private ListView<String> collectionList;
 
     // Other windows
-    private FXMLLoader loader;
+    private FXMLLoader loader = new FXMLLoader();
     private Scene loginScene;
     private Stage loginStage;
 
@@ -31,19 +31,6 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Prepare login screen
-        loader = new FXMLLoader(MyApp.class.getResource("/login.fxml"));
-        try {
-            loginScene = new Scene(loader.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        loginStage = new Stage();
-        loginStage.setTitle("Login");
-        loginStage.initModality(Modality.APPLICATION_MODAL);
-        loginStage.setScene(loginScene);
-
-
         // Initialize list view
         for (int i = 0; i < 10; i++) {
             collectionList.getItems().add("Placeholder " + i);
@@ -75,6 +62,17 @@ public class HomeController implements Initializable {
     }
 
     public void login(){
+        // Prepare login screen
+        loader = new FXMLLoader(MyApp.class.getResource("/login.fxml"));
+        try {
+            loginScene = new Scene(loader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        loginStage = new Stage();
+        loginStage.setTitle("Login");
+        loginStage.initModality(Modality.APPLICATION_MODAL);
+        loginStage.setScene(loginScene);
         loginStage.showAndWait();
     }
     public void openExport() throws IOException{
@@ -88,6 +86,19 @@ public class HomeController implements Initializable {
         exportStage.initModality(Modality.APPLICATION_MODAL);
         exportStage.setScene(exportScene);
         exportStage.setTitle("Exporting...");
-        exportStage.show();
+        exportStage.showAndWait();
+    }
+    public void openImport() throws IOException{
+        Scene importScene;
+        Stage importStage = new Stage();
+
+        loader.setRoot(null);
+        loader.setController(null);
+        loader.setLocation(MyApp.class.getResource("/import.fxml"));
+        importScene = new Scene(loader.load());
+        importStage.initModality(Modality.APPLICATION_MODAL);
+        importStage.setScene(importScene);
+        importStage.setTitle("Importing...");
+        importStage.showAndWait();
     }
 }
