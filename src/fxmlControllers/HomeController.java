@@ -22,7 +22,6 @@ public class HomeController implements Initializable {
     private ListView<String> collectionList;
 
     // Other windows
-    private FXMLLoader loader = new FXMLLoader();
     private Scene loginScene;
     private Stage loginStage;
 
@@ -39,12 +38,11 @@ public class HomeController implements Initializable {
         collectionList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>(){
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                FXMLLoader loader = new FXMLLoader();
                 cur = collectionList.getSelectionModel().getSelectedItem();
 
                 Scene viewEntryScene;
                 Stage viewEntryStage;
-                loader.setRoot(null);
-                loader.setController(null);
                 loader.setLocation(MyApp.class.getResource("/viewEntry.fxml"));
                 try {
                     viewEntryScene = new Scene(loader.load());
@@ -63,7 +61,7 @@ public class HomeController implements Initializable {
 
     public void login(){
         // Prepare login screen
-        loader = new FXMLLoader(MyApp.class.getResource("/login.fxml"));
+        FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/login.fxml"));
         try {
             loginScene = new Scene(loader.load());
         } catch (IOException e) {
@@ -78,9 +76,8 @@ public class HomeController implements Initializable {
     public void openExport() throws IOException{
         Scene exportScene;
         Stage exportStage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
 
-        loader.setRoot(null);
-        loader.setController(null);
         loader.setLocation(MyApp.class.getResource("/export.fxml"));
         exportScene = new Scene(loader.load());
         exportStage.initModality(Modality.APPLICATION_MODAL);
@@ -91,14 +88,21 @@ public class HomeController implements Initializable {
     public void openImport() throws IOException{
         Scene importScene;
         Stage importStage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
 
-        loader.setRoot(null);
-        loader.setController(null);
         loader.setLocation(MyApp.class.getResource("/import.fxml"));
         importScene = new Scene(loader.load());
+
+        EntryController entry = loader.getController();
+        entry.setHome(this);
+
         importStage.initModality(Modality.APPLICATION_MODAL);
         importStage.setScene(importScene);
         importStage.setTitle("Importing...");
         importStage.showAndWait();
+    }
+
+    public void delete(String placeholder){
+        collectionList.getItems().remove(placeholder);
     }
 }

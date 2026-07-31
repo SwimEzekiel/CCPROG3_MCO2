@@ -7,3 +7,8 @@ public class Launcher {
         Application.launch(MyApp.class, args);
     }
 }
+
+/*
+    TODO: Implement delete and rate.
+    TODO: Implement edit and add.
+ */
