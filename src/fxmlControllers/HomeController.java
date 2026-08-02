@@ -28,7 +28,7 @@ public class HomeController implements Initializable {
     // Attributes
     private User curU;
     private MediaEntry cur;
-    private String filters;
+    private String filters = "";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -128,5 +128,26 @@ public class HomeController implements Initializable {
     }
     public void setCurU(User curU){
         this.curU = curU;
+    }
+
+    public void openAddForCG() throws IOException{
+        FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/addEntry.fxml"));
+        Scene sc = new Scene(loader.load());
+
+        AddController add = loader.getController();
+        add.setCollection(curU.getCollection());
+        add.field2.setPromptText("Input price");
+        add.field3.setPromptText("Input publisher");
+        add.titleLabel.setText("Add a Card Game");
+        add.standaloneCheck.setOpacity(0.00);
+        add.standaloneCheck.setManaged(false);
+        add.setType('c');
+
+        Stage st = new Stage();
+        st.setTitle("Adding an entry...");
+        st.initModality(Modality.APPLICATION_MODAL);
+        st.setScene(sc);
+        st.showAndWait();
+        updateListView();
     }
 }

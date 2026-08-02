@@ -9,6 +9,5 @@ public class Launcher {
 }
 
 /*
-    TODO: Implement rate.
-    TODO: Implement edit and add.
+    TODO: Implement add.
  */

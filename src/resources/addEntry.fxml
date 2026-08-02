@@ -39,7 +39,7 @@
                   <Font name="Impact" size="16.0" />
                </font>
             </CheckBox>
-            <Button fx:id="addButton" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #636b2f;" text="Add entry" textFill="WHITE" underline="true">
+            <Button fx:id="addButton" alignment="CENTER" mnemonicParsing="false" onAction="#addEntry" style="-fx-background-color: #636b2f;" text="Add entry" textFill="WHITE" underline="true">
                <font>
                   <Font name="Impact" size="16.0" />
                </font>

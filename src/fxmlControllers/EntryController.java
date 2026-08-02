@@ -126,7 +126,7 @@ public class EntryController implements Initializable {
                     st.showAndWait();
                 }
             });
-        }
+        } // TODO: implement for episodes
     }
 
     public void deleteEntry(){
