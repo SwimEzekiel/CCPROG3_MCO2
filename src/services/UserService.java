@@ -23,8 +23,6 @@ public class UserService {
         database.setCurrent(1);
         users.add(new User(1011, "Fonsi", database.getCGCollection(), database.getTVCollection(), database.getWSCollection()));
 
-//        database.setCurrent(2);
-//        users.add(new User(1, "JohnTobyA.Pickavant", database.getCGCollection(), database.getTVCollection(), database.getWSCollection()));
     }
 
     public int getAccNum(int userID){
