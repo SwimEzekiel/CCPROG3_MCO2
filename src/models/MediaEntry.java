@@ -86,4 +86,9 @@ public abstract class MediaEntry {
         else
             System.out.println("Please mark the entry as completed first.");
     }
+
+    @Override
+    public String toString(){
+        return title;
+    }
 }

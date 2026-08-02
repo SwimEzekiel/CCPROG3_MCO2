@@ -8,17 +8,14 @@ package app;
  * @author Matthew Alfonso Beltran
  */
 
-import controllers.CGController;
-import controllers.TVController;
-import controllers.WebController;
+import modelControllers.CGController;
+import modelControllers.TVController;
+import modelControllers.WebController;
 import models.Collection;
-import models.CardGame;
 import models.Expansion;
 import models.TVSeries;
 import models.Episodes;
-import models.Website;
 import models.Status;
-import models.MediaEntry;
 import views.UnifiedView;
 
 import java.time.LocalDate;

@@ -19,7 +19,6 @@ public class Collection {
     private ArrayList<ArrayList<Website>> WSdatabase;
 
     // Constructor
-
     /**
      * Initializes a new controllers.Collection object with an "empty" placeholder value for the current field.
      * -1 means no user has logged in yet.

@@ -6,16 +6,23 @@
  */
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     private int userID;
     private String userPassword;
-    private Collection collection;
+    private ArrayList<MediaEntry> collection;
 
     //Constructor
-    public User(int userID, String userPassword){
+    public User(int userID, String userPassword, ArrayList<CardGame> cgs, ArrayList<TVSeries> tvs, ArrayList<Website> wbs){
         this.userID = userID;
         this.userPassword = userPassword;
-        collection = new Collection();
+        collection = new ArrayList<>();
+
+        collection.addAll(cgs);
+        collection.addAll(tvs);
+        collection.addAll(wbs);
     }
     //Getters
     public int getUserID(){
@@ -26,7 +33,7 @@ public class User {
         return userPassword;
     }
 
-    public Collection getCollection(){
+    public ArrayList<MediaEntry> getCollection(){
         return collection;
     }
 
@@ -39,7 +46,7 @@ public class User {
         this.userPassword = userPassword;
     }
 
-    public void setCollection(Collection collection){
+    public void setCollection(ArrayList<MediaEntry> collection){
         this.collection = collection;
     }
 }

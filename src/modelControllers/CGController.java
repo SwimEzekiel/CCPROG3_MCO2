@@ -1,4 +1,4 @@
-package controllers;
+package modelControllers;
 
 import models.CardGame;
 import models.Expansion;

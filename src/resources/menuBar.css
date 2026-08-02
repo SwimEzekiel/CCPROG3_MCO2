@@ -1,0 +1,13 @@
+.menu-bar .menu .label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-font-family: "Impact";
+}
+
+.menu-bar .menu-item .label {
+    -fx-font-weight: normal;
+    -fx-font-size: 12px;
+    -fx-font-family: "System";
+    -fx-text-fill: black;
+}
