@@ -9,6 +9,6 @@ public class Launcher {
 }
 
 /*
-    TODO: Implement delete and rate.
+    TODO: Implement rate.
     TODO: Implement edit and add.
  */

@@ -20,26 +20,22 @@ import java.util.ResourceBundle;
 public class HomeController implements Initializable {
 
     // FXML Injections
-    @FXML private ListView<String> collectionList;
+    @FXML private ListView<MediaEntry> collectionList;
     @FXML private CheckMenuItem showCards;
     @FXML private CheckMenuItem showSeries;
     @FXML private CheckMenuItem showSites;
 
-    // Other windows
-    private Scene loginScene;
-    private Stage loginStage;
-
     // Attributes
     private User curU;
-    private String cur;
+    private MediaEntry cur;
     private String filters;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Prepare detailed entry screen
-        collectionList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>(){
+        collectionList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MediaEntry>(){
             @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+            public void changed(ObservableValue<? extends MediaEntry> observableValue, MediaEntry mediaEntry, MediaEntry t1) {
                 FXMLLoader loader = new FXMLLoader();
                 cur = collectionList.getSelectionModel().getSelectedItem();
 
@@ -52,38 +48,27 @@ public class HomeController implements Initializable {
                     throw new RuntimeException(e);
                 }
                 EntryController entry = loader.getController();
-                entry.setTitle(cur);
-                entry.setEntry(findEntry(cur));
+                entry.setTitle(cur.getTitle());
+                entry.setEntry(cur);
+                entry.setHome(HomeController.this);
                 viewEntryStage = new Stage();
                 viewEntryStage.setTitle("Detailed View");
                 viewEntryStage.setScene(viewEntryScene);
-                viewEntryStage.show();
+                viewEntryStage.initModality(Modality.APPLICATION_MODAL);
+                viewEntryStage.showAndWait();
             }
         });
     }
 
-    private MediaEntry findEntry(String name){
-        for (CardGame cg : curU.getCollection().getCGCollection()){
-            System.out.println(cg.getTitle());
-            if (cg.getTitle().equals(name)) return cg;
-        }
-        for (TVSeries tv : curU.getCollection().getTVCollection()){
-            if (tv.getTitle().equals(name)) return tv;
-        }
-        for (Website w : curU.getCollection().getWSCollection()){
-            if (w.getTitle().equals(name)) return w;
-        }
-        return null;
-    }
     public void login() throws IOException{
         // Prepare login screen
         FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/login.fxml"));
-        loginScene = new Scene(loader.load());
+        Scene loginScene = new Scene(loader.load());
 
         LoginController lc = loader.getController();
         lc.setHome(this);
 
-        loginStage = new Stage();
+        Stage loginStage = new Stage();
         loginStage.setTitle("Login");
         loginStage.initModality(Modality.APPLICATION_MODAL);
         loginStage.setScene(loginScene);
@@ -133,22 +118,28 @@ public class HomeController implements Initializable {
         collectionList.getItems().clear();
         if (filters.contains("c")){
             for (CardGame entry : curU.getCollection().getCGCollection()){
-                collectionList.getItems().add(entry.getTitle());
+                collectionList.getItems().add(entry);
             }
         }
         if (filters.contains("t")){
             for (TVSeries entry : curU.getCollection().getTVCollection()){
-                collectionList.getItems().add(entry.getTitle());
+                collectionList.getItems().add(entry);
             }
         }
         if (filters.contains("w")){
             for (Website entry : curU.getCollection().getWSCollection()){
-                collectionList.getItems().add(entry.getTitle());
+                collectionList.getItems().add(entry);
             }
         }
     }
-    public void delete(String placeholder){
-        collectionList.getItems().remove(placeholder);
+    public void delete(MediaEntry entry){
+        collectionList.getItems().remove(entry);
+        switch (entry) {
+            case CardGame cardGame -> curU.getCollection().getCGCollection().remove(entry);
+            case TVSeries tvSeries -> curU.getCollection().getTVCollection().remove(entry);
+            case Website website -> curU.getCollection().getWSCollection().remove(entry);
+            case null, default -> System.out.println("UN QUE?");
+        }
     }
     public void setCurU(User curU){
         this.curU = curU;
