@@ -1,14 +1,17 @@
 package fxmlControllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import models.*;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class AddController {
     @FXML public Label titleLabel;
@@ -16,9 +19,12 @@ public class AddController {
     @FXML public TextField field2;
     @FXML public TextField field3;
     @FXML public CheckBox standaloneCheck;
+    @FXML public Spinner<Integer> seriesSpinner;
     @FXML private Button addButton;
     private ArrayList<MediaEntry> collection;
     private ArrayList<Expansion> exCol;
+    private ArrayList<ArrayList<Episodes>> epCol;
+    private MediaEntry cur;
     private char type;
 
     public void setCollection(ArrayList<MediaEntry> collection){
@@ -27,8 +33,19 @@ public class AddController {
     public void setExCol(ArrayList<Expansion> exCol){
         this.exCol = exCol;
     }
+    public void setEpCol(ArrayList<ArrayList<Episodes>> epCol){
+        this.epCol = epCol;
+    }
     public void setType(char type){
         this.type = type;
+    }
+
+    public void initializeSpinner(){
+        seriesSpinner.setOpacity(1.00);
+        SpinnerValueFactory<Integer> factory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10);
+        factory.setValue(1);
+        seriesSpinner.setValueFactory(factory);
+        standaloneCheck.setOpacity(0.00);
     }
 
     public void addEntry(){
@@ -92,6 +109,40 @@ public class AddController {
 
                     Expansion ex = new Expansion(title, price, Status.PLANNED, standalone);
                     exCol.add(ex);
+                    confirm.showAndWait();
+                    cur.close();
+                } else error.show();
+                break;
+            case 't':
+                if (!titleField.getText().isEmpty() && !field2.getText().isEmpty() && !field3.getText().isEmpty()) {
+                    String title = titleField.getText();
+                    String author = field2.getText();
+                    int year;
+                    try {
+                        year = Integer.parseInt(field3.getText());
+                    } catch (NumberFormatException e){
+                        throw new IllegalArgumentException(e);
+                    }
+
+                    TVSeries tv = new TVSeries(title, seriesSpinner.getValue(), author, Status.PLANNED);
+                    tv.setYearReleased(year);
+                    collection.add(tv);
+                    confirm.showAndWait();
+                    cur.close();
+                } else error.show();
+                break;
+            case 'p':
+                if (!titleField.getText().isEmpty() && !field2.getText().isEmpty()) {
+                    String title = titleField.getText();
+                    int runtime;
+                    try {
+                        runtime = Integer.parseInt(field2.getText());
+                    } catch (NumberFormatException e){
+                        throw new IllegalArgumentException(e);
+                    }
+
+                    Episodes ep = new Episodes(title, Status.PLANNED, runtime);
+                    epCol.get(seriesSpinner.getValue()-1).add(ep);
                     confirm.showAndWait();
                     cur.close();
                 } else error.show();

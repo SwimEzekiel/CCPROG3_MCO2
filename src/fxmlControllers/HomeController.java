@@ -158,7 +158,25 @@ public class HomeController implements Initializable {
     }
 
     public void openAddForTV() throws IOException{
+        FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/addEntry.fxml"));
+        Scene sc = new Scene(loader.load());
 
+        AddController add = loader.getController();
+        add.setCollection(curU.getCollection());
+        add.field2.setPromptText("Input author");
+        add.field3.setPromptText("Input year released");
+        add.titleLabel.setText("Add a TV Series");
+        add.standaloneCheck.setOpacity(0.00);
+        add.standaloneCheck.setManaged(false);
+        add.initializeSpinner();
+        add.setType('t');
+
+        Stage st = new Stage();
+        st.setTitle("Adding an entry...");
+        st.initModality(Modality.APPLICATION_MODAL);
+        st.setScene(sc);
+        st.showAndWait();
+        updateListView();
     }
 
     public void openAddForWS() throws IOException{
@@ -182,10 +200,6 @@ public class HomeController implements Initializable {
         updateListView();
     }
 
-    public void openAddForEP() throws IOException{
-
-    }
-
     public void logout(){
         showCards.setSelected(false);
         showSeries.setSelected(false);
@@ -194,3 +208,7 @@ public class HomeController implements Initializable {
         login();
     }
 }
+
+// TODO: implement add episode
+// TODO: fix login logout bugs
+// TODO: start documentation

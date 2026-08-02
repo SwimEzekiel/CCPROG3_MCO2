@@ -72,6 +72,7 @@ public class EntryController implements Initializable {
             detailsList.getItems().add("Year Released: " + ((TVSeries) entry).getYearReleased());
 
             relatedMediaLabel.setText("Episodes");
+            addSub.setOnAction(this::openAddForEP);
             addSub.setText("Add an Episode");
             for (ArrayList<Episodes> season : ((TVSeries) entry).getEpisodes()){
                 for (Episodes e : season){
@@ -351,6 +352,32 @@ public class EntryController implements Initializable {
         add.field3.setManaged(false);
         add.titleLabel.setText("Add an Expansion");
         add.setType('x');
+
+        Stage st = new Stage();
+        st.setTitle("Adding an entry...");
+        st.initModality(Modality.APPLICATION_MODAL);
+        st.setScene(sc);
+        st.showAndWait();
+        updateContained();
+    }
+
+    public void openAddForEP(ActionEvent action){
+        FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/addEntry.fxml"));
+        Scene sc = null;
+        try {
+            sc = new Scene(loader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        AddController add = loader.getController();
+        add.setEpCol(((TVSeries) entry).getEpisodes());
+        add.field2.setPromptText("Input runtime");
+        add.field3.setOpacity(0.00);
+        add.field3.setManaged(false);
+        add.titleLabel.setText("Add an Episode");
+        add.initializeSpinner();
+        add.setType('p');
 
         Stage st = new Stage();
         st.setTitle("Adding an entry...");
