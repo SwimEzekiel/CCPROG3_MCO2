@@ -20,8 +20,8 @@
           <Menu mnemonicParsing="false" style="-fx-text-fill: #FFFFFF;" text="Add">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#openAddForCG" text="Add a Card Game" />
-                  <MenuItem mnemonicParsing="false" text="Add a TV Series" />
-                  <MenuItem mnemonicParsing="false" text="Add a Website" />
+                  <MenuItem mnemonicParsing="false" onAction="#openAddForTV" text="Add a TV Series" />
+                  <MenuItem mnemonicParsing="false" onAction="#openAddForWS" text="Add a Website" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="View">

@@ -7,7 +7,3 @@ public class Launcher {
         Application.launch(MyApp.class, args);
     }
 }
-
-/*
-    TODO: Implement add.
- */

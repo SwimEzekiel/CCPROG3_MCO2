@@ -150,4 +150,37 @@ public class HomeController implements Initializable {
         st.showAndWait();
         updateListView();
     }
+
+    public void openAddForTV() throws IOException{
+
+    }
+
+    public void openAddForWS() throws IOException{
+        FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/addEntry.fxml"));
+        Scene sc = new Scene(loader.load());
+
+        AddController add = loader.getController();
+        add.setCollection(curU.getCollection());
+        add.field2.setPromptText("Input URL");
+        add.field3.setPromptText("Input publish date (DD-MM-YYYY)");
+        add.titleLabel.setText("Add a Website");
+        add.standaloneCheck.setOpacity(0.00);
+        add.standaloneCheck.setManaged(false);
+        add.setType('w');
+
+        Stage st = new Stage();
+        st.setTitle("Adding an entry...");
+        st.initModality(Modality.APPLICATION_MODAL);
+        st.setScene(sc);
+        st.showAndWait();
+        updateListView();
+    }
+
+    public void openAddForEP() throws IOException{
+
+    }
+
+    public void openAddForEX() throws IOException{
+
+    }
 }

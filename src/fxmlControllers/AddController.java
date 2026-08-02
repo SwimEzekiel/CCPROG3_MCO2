@@ -6,7 +6,11 @@ import javafx.stage.Stage;
 import models.CardGame;
 import models.MediaEntry;
 import models.Status;
+import models.Website;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class AddController {
@@ -29,7 +33,7 @@ public class AddController {
     public void addEntry(){
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Success!");
-        confirm.setHeaderText("New card game created.");
+        confirm.setHeaderText("New entry created.");
         confirm.setContentText("You may now close this window.");
         Stage cur = (Stage) titleLabel.getScene().getWindow();
 
@@ -50,6 +54,25 @@ public class AddController {
                     confirm.showAndWait();
                     cur.close();
                 }
+                break;
+            case 'w':
+                if (!titleField.getText().isEmpty() && !field2.getText().isEmpty() && !field3.getText().isEmpty()) {
+                    String title = titleField.getText();
+                    String url = field2.getText();
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    LocalDate publishDate;
+                    try {
+                        publishDate = LocalDate.parse(field3.getText(), dtf);
+                    } catch (DateTimeParseException e){
+                        throw new IllegalArgumentException(e);
+                    }
+
+                    Website ws = new Website(title, url, publishDate, Status.PLANNED);
+                    collection.add(ws);
+                    confirm.showAndWait();
+                    cur.close();
+                }
+                break;
         }
     }
 }
