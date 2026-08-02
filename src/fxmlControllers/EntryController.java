@@ -35,6 +35,7 @@ public class EntryController implements Initializable {
     @FXML private Line relatedMediaLine;
     @FXML private Button addSub;
     private MediaEntry entry;
+    private MediaEntry selSub;
     private HomeController home;
     private EntryController container;
 
@@ -47,6 +48,9 @@ public class EntryController implements Initializable {
     public void setEntry(MediaEntry entry){
         this.entry = entry;
         updateDetails();
+    }
+    public void setSelSub(MediaEntry selSub){
+        this.selSub = selSub;
     }
     public void setContainer(EntryController container){
         this.container = container;
@@ -93,6 +97,15 @@ public class EntryController implements Initializable {
             containedList.setEditable(false);
 
             detailsList.getItems().add("Price: " + ((Expansion) entry).getPrice());
+        } else if (entry instanceof Episodes){
+            relatedMediaLabel.setVisible(false);
+            relatedMediaLine.setVisible(false);
+            addSub.setVisible(false);
+            addSub.setDisable(true);
+            containedList.setVisible(false);
+            containedList.setEditable(false);
+
+            detailsList.getItems().add("Runtime (in mins): " + ((Episodes) entry).getRunTime());
         }
 
         int rating = entry.getRating();
@@ -129,6 +142,7 @@ public class EntryController implements Initializable {
                     Stage st = new Stage();
 
                     EntryController ec = loader.getController();
+                    ec.setSelSub(sel);
                     ec.setContainer(EntryController.this);
                     ec.setTitleLabel(sel.getTitle());
                     ec.setEntry(sel);
@@ -153,6 +167,7 @@ public class EntryController implements Initializable {
                     Stage st = new Stage();
 
                     EntryController ec = loader.getController();
+                    ec.setSelSub(sel);
                     ec.setContainer(EntryController.this);
                     ec.setTitleLabel(sel.getTitle());
                     ec.setEntry(sel);
@@ -188,11 +203,22 @@ public class EntryController implements Initializable {
         Optional<ButtonType> choice = warnDel.showAndWait();
 
         if (choice.isPresent() && choice.get() == ButtonType.OK) {
-            System.out.println("Entry deleted!");
-            home.delete(entry);
+            if (home != null) {
+                home.delete(entry);
+            }
+            else if (container != null) {
+                container.delete(selSub);
+                container.updateContained();
+            }
             cur.close();
         }
-        else System.out.println("Deletion cancelled!");
+    }
+    public void delete(MediaEntry sub){
+        if (sub instanceof Expansion) ((CardGame) entry).getExpansions().remove(sub);
+        else if (sub instanceof Episodes) {
+            for (ArrayList<Episodes> season : ((TVSeries) entry).getEpisodes())
+                season.remove(sub);
+        }
     }
 
     public void openRate() throws IOException {

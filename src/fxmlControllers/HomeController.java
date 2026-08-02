@@ -58,12 +58,18 @@ public class HomeController implements Initializable {
                 viewEntryStage.showAndWait();
             }
         });
+        login();
     }
 
-    public void login() throws IOException{
+    public void login(){
         // Prepare login screen
         FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/login.fxml"));
-        Scene loginScene = new Scene(loader.load());
+        Scene loginScene = null;
+        try {
+            loginScene = new Scene(loader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         LoginController lc = loader.getController();
         lc.setHome(this);
@@ -178,5 +184,13 @@ public class HomeController implements Initializable {
 
     public void openAddForEP() throws IOException{
 
+    }
+
+    public void logout(){
+        showCards.setSelected(false);
+        showSeries.setSelected(false);
+        showSites.setSelected(false);
+        curU = null;
+        login();
     }
 }
