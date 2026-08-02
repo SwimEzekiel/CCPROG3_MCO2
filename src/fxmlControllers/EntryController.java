@@ -1,8 +1,10 @@
 package fxmlControllers;
 
 import init.MyApp;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -12,10 +14,12 @@ import javafx.stage.Stage;
 import models.*;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class EntryController{
+public class EntryController implements Initializable {
 
     @FXML private AnchorPane anchor;
     @FXML private Label titleLabel;
@@ -74,8 +78,17 @@ public class EntryController{
         }
 
         int rating = entry.getRating();
-        if (rating != -1) ratingLabel.setText(String.valueOf(rating));
         String review = entry.getReview();
+
+        Status s = entry.getStatus();
+        detailsList.getItems().add(switch (s){
+            case Status.PLANNED -> "Status: Planned.";
+            case Status.IN_PROGRESS -> "Status: In Progress.";
+            case Status.COMPLETED -> "Status: Completed.";
+            default -> "ERR";
+        });
+
+        if (rating != -1) ratingLabel.setText(String.valueOf(rating));
         if (review != null) {
             ratingButton.setOpacity(0.00);
             ratingButton.setDisable(true);
@@ -118,5 +131,99 @@ public class EntryController{
         reviewArea.setText(entry.getReview());
         ratingButton.setDisable(true);
         ratingButton.setOpacity(0.00);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        detailsList.setCellFactory(param -> new ListCell<>(){
+            private ChoiceBox<Status> statusBox = new ChoiceBox<>(FXCollections.observableArrayList(Status.PLANNED, Status.IN_PROGRESS, Status.COMPLETED));
+            private TextField field = new TextField();
+            private String type;
+
+            {
+                setOnMouseClicked(e -> {
+                    if (!isEmpty()){
+                        getListView().edit(getIndex());
+                    }
+                });
+
+                statusBox.setOnAction(e -> {
+                    if (isEditing()) commitEdit(type + ": " + statusBox.getValue());
+                });
+
+                field.setOnAction(e -> {
+                    if (isEditing()) commitEdit(type + ": " + field.getText());
+                });
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty){
+                super.updateItem(item, empty);
+
+                if (empty || item == null){
+                    setText(null);
+                    setGraphic(null);
+                    return;
+                }
+
+                type = item.substring(0, item.indexOf(':'));
+
+                if (isEditing()){
+                    switch(type){
+                        case "Status":
+                            statusBox.setValue(entry.getStatus());
+                            setGraphic(statusBox);
+                            break;
+                        case "Price":
+                            field.setPromptText("Input price: " + String.valueOf(((CardGame) entry).getPrice()));
+                            setGraphic(field);
+                            break;
+                        case "Publisher":
+                            field.setPromptText("Input publisher: " + String.valueOf(((CardGame) entry).getPublisher()));
+                            setGraphic(field);
+                            break;
+                        default:
+                            setText(item);
+                            setGraphic(null);
+                            break;
+                    }
+                } else {
+                    setText(item);
+                    setGraphic(null);
+                }
+            }
+
+            @Override
+            public void startEdit() {
+                if (isEmpty()) return;
+                super.startEdit();
+                updateItem(getItem(), isEmpty()); // re-render into edit mode
+            }
+
+            @Override
+            public void cancelEdit() {
+                super.cancelEdit();
+                updateItem(getItem(), isEmpty()); // re-render back to label mode
+            }
+
+            @Override
+            public void commitEdit(String newValue) {
+                if (entry instanceof CardGame){
+                    if (type.equals("Price")) {
+                        try {
+                            ((CardGame) entry).setPrice(Double.parseDouble(newValue.substring(newValue.indexOf(':')+2)));
+                        } catch (NumberFormatException e){
+                            throw new IllegalArgumentException(e);
+                        }
+                    } // TODO: Implement other fields and types
+                }
+
+                if (type.equals("Status")) entry.setStatus(statusBox.getValue());
+
+                super.commitEdit(newValue);
+                setText(newValue);
+                setGraphic(null);
+            }
+        });
     }
 }
