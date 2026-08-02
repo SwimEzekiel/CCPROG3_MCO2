@@ -16,6 +16,6 @@
       </Label>
       <TextField fx:id="userIDField" layoutX="88.0" layoutY="204.0" prefHeight="25.0" prefWidth="224.0" promptText="User ID" />
       <PasswordField fx:id="pwField" layoutX="88.0" layoutY="236.0" prefHeight="25.0" prefWidth="224.0" promptText="Password" />
-      <Button alignment="TOP_CENTER" defaultButton="true" layoutX="177.0" layoutY="281.0" mnemonicParsing="false" style="-fx-background-color: #636B2F;" text="Login" textAlignment="CENTER" textFill="WHITE" underline="true" />
+      <Button alignment="TOP_CENTER" defaultButton="true" layoutX="177.0" layoutY="281.0" mnemonicParsing="false" onAction="#login" style="-fx-background-color: #636B2F;" text="Login" textAlignment="CENTER" textFill="WHITE" underline="true" />
    </children>
 </AnchorPane>

@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import models.User;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +27,7 @@ public class HomeController implements Initializable {
     private Stage loginStage;
 
     // Attributes
+    private User curU;
     private String cur;
 
     @Override
@@ -59,19 +61,20 @@ public class HomeController implements Initializable {
         });
     }
 
-    public void login(){
+    public void login() throws IOException{
         // Prepare login screen
         FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/login.fxml"));
-        try {
-            loginScene = new Scene(loader.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loginScene = new Scene(loader.load());
+
+        LoginController lc = loader.getController();
+        lc.setHome(this);
+
         loginStage = new Stage();
         loginStage.setTitle("Login");
         loginStage.initModality(Modality.APPLICATION_MODAL);
         loginStage.setScene(loginScene);
         loginStage.showAndWait();
+        if (curU != null) System.out.println("User: " + curU.getUserID());
     }
     public void openExport() throws IOException{
         Scene exportScene;
@@ -104,5 +107,8 @@ public class HomeController implements Initializable {
 
     public void delete(String placeholder){
         collectionList.getItems().remove(placeholder);
+    }
+    public void setCurU(User curU){
+        this.curU = curU;
     }
 }
