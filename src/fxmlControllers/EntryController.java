@@ -138,7 +138,31 @@ public class EntryController implements Initializable {
                     st.showAndWait();
                 }
             });
-        } // TODO: implement for episodes
+        } else if (entry instanceof TVSeries && !((TVSeries) entry).getEpisodes().isEmpty()){
+            containedList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MediaEntry>(){
+                @Override
+                public void changed(ObservableValue<? extends MediaEntry> observableValue, MediaEntry mediaEntry, MediaEntry t1) {
+                    Episodes sel = (Episodes) containedList.getSelectionModel().getSelectedItem();
+                    FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/viewEntry.fxml"));
+                    Scene sc;
+                    try {
+                        sc = new Scene(loader.load());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Stage st = new Stage();
+
+                    EntryController ec = loader.getController();
+                    ec.setContainer(EntryController.this);
+                    ec.setTitleLabel(sel.getTitle());
+                    ec.setEntry(sel);
+
+                    st.initModality(Modality.APPLICATION_MODAL);
+                    st.setScene(sc);
+                    st.showAndWait();
+                }
+            });
+        }
     }
     public void updateContained(){
         containedList.getItems().clear();
