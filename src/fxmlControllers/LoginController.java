@@ -14,9 +14,21 @@ public class LoginController {
     private UserService service;
     private HomeController home;
 
+    /**
+     * Creates a LoginController
+     * <b>Precondition:</b> none<br>
+     * <b>Postcondition:</b> UserService is initialized
+     */
     public LoginController(){
         service = new UserService();
     }
+
+    /**
+     * Sets the HomeController
+     * @param home contains the HomeController<br>
+     * <b>Precondition:</b> home is valid<br>
+     * <b>Postcondition:</b> home field is updated
+     */
     public void setHome(HomeController home){
         this.home = home;
     }

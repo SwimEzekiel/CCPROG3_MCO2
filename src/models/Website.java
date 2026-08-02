@@ -97,4 +97,5 @@ public class Website extends MediaEntry {
     public void visit(){
         System.out.println("This opens " + URL + " in a browser window!");
     }
+
 }

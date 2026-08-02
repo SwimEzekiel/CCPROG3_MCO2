@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AddController {
+    //for the GUI
     @FXML public Label titleLabel;
     @FXML private TextField titleField;
     @FXML public TextField field2;
@@ -21,6 +22,8 @@ public class AddController {
     @FXML public CheckBox standaloneCheck;
     @FXML public Spinner<Integer> seriesSpinner;
     @FXML private Button addButton;
+
+    //
     private ArrayList<MediaEntry> collection;
     private ArrayList<Expansion> exCol;
     private ArrayList<ArrayList<Episodes>> epCol;

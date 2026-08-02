@@ -15,10 +15,23 @@ public class RateController implements Initializable {
     @FXML private Button reviewButton;
     private MediaEntry entry;
 
+    /**
+     * Sets the media entry to be reviewed
+     * @param entry contains the MediaEntry to be rated and reviewed<br>
+     * <b>Precondition:</b> entry is valid<br>
+     * <b>Postcondition:</b> entry field is updated
+     */
     public void setEntry(MediaEntry entry){
         this.entry = entry;
     }
 
+    /**
+     * Initializes the rating spinner
+     * @param url contains the location of the FXML file<br>
+     * @param resourceBundle contains the resources for localization<br>
+     * <b>Precondition:</b> controller is successfully loaded<br>
+     * <b>Postcondition:</b> rating spinner is initialized
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         SpinnerValueFactory<Integer> factory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10);
@@ -26,6 +39,11 @@ public class RateController implements Initializable {
         ratingSpinner.setValueFactory(factory);
     }
 
+    /**
+     * Submits the user's rating and review for the current media entry
+     * <b>Precondition:</b> valid media entry <br>
+     * <b>Postcondition:</b> entry is updated with the rating and review if valid
+     */
     public void giveReview(){
         Stage window = (Stage) reviewArea.getScene().getWindow();
         Alert err = new Alert(Alert.AlertType.ERROR);

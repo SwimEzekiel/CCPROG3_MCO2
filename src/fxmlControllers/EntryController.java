@@ -39,23 +39,62 @@ public class EntryController implements Initializable {
     private HomeController home;
     private EntryController container;
 
+    /**
+     * Sets the title label
+     * @param titleLabel contains the title<br>
+     * <b>Precondition:</b> title is valid<br>
+     * <b>Postcondition:</b> title label is updated
+     */
     public void setTitleLabel(String titleLabel){
         this.titleLabel.setText(titleLabel);
     }
+
+    /**
+     * Sets the HomeController
+     * @param home contains the HomeController<br>
+     * <b>Precondition:</b> home is valid<br>
+     * <b>Postcondition:</b> home field is updated
+     */
     public void setHome(HomeController home){
         this.home = home;
     }
+
+    /**
+     * Sets the media entry
+     * @param entry contains the MediaEntry<br>
+     * <b>Precondition:</b> entry is valid<br>
+     * <b>Postcondition:</b> entry field is updated
+     */
     public void setEntry(MediaEntry entry){
         this.entry = entry;
         updateDetails();
     }
+
+    /**
+     * Sets the selected sub entry
+     * @param selSub contains the selected MediaEntry<br>
+     * <b>Precondition:</b> entry is valid<br>
+     * <b>Postcondition:</b> selected sub entry is updated
+     */
     public void setSelSub(MediaEntry selSub){
         this.selSub = selSub;
     }
+
+    /**
+     * Sets the parent EntryController
+     * @param container contains the parent controller<br>
+     * <b>Precondition:</b> controller is valid<br>
+     * <b>Postcondition:</b> container field is updated
+     */
     public void setContainer(EntryController container){
         this.container = container;
     }
 
+    /**
+     * Updates the entry details
+     * <b>Precondition:</b> entry is set<br>
+     * <b>Postcondition:</b> entry details are displayed
+     */
     private void updateDetails(){
         if (entry instanceof CardGame){
             detailsList.getItems().add("Price: " + ((CardGame) entry).getPrice());
@@ -180,6 +219,12 @@ public class EntryController implements Initializable {
             });
         }
     }
+
+    /**
+     * Updates the contained entries
+     * <b>Precondition:</b> entry is set<br>
+     * <b>Postcondition:</b> contained list is updated
+     */
     public void updateContained(){
         containedList.getItems().clear();
         if (entry instanceof CardGame){
@@ -195,6 +240,11 @@ public class EntryController implements Initializable {
         }
     }
 
+    /**
+     * Deletes the current entry
+     * <b>Precondition:</b> entry exists<br>
+     * <b>Postcondition:</b> entry is removed
+     */
     public void deleteEntry(){
         Stage cur = (Stage) anchor.getScene().getWindow();
         Alert warnDel = new Alert(Alert.AlertType.WARNING);
@@ -214,6 +264,13 @@ public class EntryController implements Initializable {
             cur.close();
         }
     }
+
+    /**
+     * Deletes a contained entry
+     * @param sub contains the MediaEntry to delete<br>
+     * <b>Precondition:</b> entry is valid<br>
+     * <b>Postcondition:</b> contained entry is removed
+     */
     public void delete(MediaEntry sub){
         if (sub instanceof Expansion) ((CardGame) entry).getExpansions().remove(sub);
         else if (sub instanceof Episodes) {
@@ -222,6 +279,11 @@ public class EntryController implements Initializable {
         }
     }
 
+    /**
+     * Opens the rating screen
+     * <b>Precondition:</b> entry is valid<br>
+     * <b>Postcondition:</b> rating screen is displayed
+     */
     public void openRate() throws IOException {
         FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/rateEntry.fxml"));
         Scene sc = new Scene(loader.load());
@@ -234,6 +296,12 @@ public class EntryController implements Initializable {
         st.showAndWait();
         if (entry.getRating() != -1) updateRating();
     }
+
+    /**
+     * Updates the displayed rating
+     * <b>Precondition:</b> entry has a rating<br>
+     * <b>Postcondition:</b> rating display is updated
+     */
     private void updateRating(){
         ratingLabel.setText(String.valueOf(entry.getRating()));
         reviewArea.setText(entry.getReview());
@@ -242,6 +310,13 @@ public class EntryController implements Initializable {
         ratingButton.setOpacity(0.00);
     }
 
+    /**
+     * Initializes the controller
+     * @param url contains the FXML location<br>
+     * @param resourceBundle contains localization resources<br>
+     * <b>Precondition:</b> controller is loaded<br>
+     * <b>Postcondition:</b> list view is initialized
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         detailsList.setCellFactory(param -> new ListCell<>(){
@@ -336,6 +411,12 @@ public class EntryController implements Initializable {
         });
     }
 
+    /**
+     * Opens the add expansion screen
+     * @param action contains the button event<br>
+     * <b>Precondition:</b> card game is selected<br>
+     * <b>Postcondition:</b> add expansion screen is displayed
+     */
     public void openAddForEX(ActionEvent action){
         FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/addEntry.fxml"));
         Scene sc = null;
@@ -361,6 +442,12 @@ public class EntryController implements Initializable {
         updateContained();
     }
 
+    /**
+     * Opens the add episode screen
+     * @param action contains the button event<br>
+     * <b>Precondition:</b> TV series is selected<br>
+     * <b>Postcondition:</b> add episode screen is displayed
+     */
     public void openAddForEP(ActionEvent action){
         FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/addEntry.fxml"));
         Scene sc = null;

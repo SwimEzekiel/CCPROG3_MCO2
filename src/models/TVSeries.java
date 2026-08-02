@@ -119,4 +119,5 @@ public class TVSeries extends MediaEntry{
     public void setYearReleased(int yearReleased) {
         this.yearReleased = yearReleased;
     }
+
 }

@@ -30,6 +30,13 @@ public class HomeController implements Initializable {
     private MediaEntry cur;
     private String filters = "";
 
+    /**
+     * Initializes the controller
+     * @param url contains the FXML location<br>
+     * @param resourceBundle contains localization resources<br>
+     * <b>Precondition:</b> controller is loaded<br>
+     * <b>Postcondition:</b> login screen is shown
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Prepare detailed entry screen
@@ -61,6 +68,11 @@ public class HomeController implements Initializable {
         login();
     }
 
+    /**
+     * Shows the login screen when clicked
+     * <b>Preconditions:</b> login is clicked <br>
+     * <b>Postconditions:</b> shows the login screen to the user
+     */
     public void login(){
         // Prepare login screen
         FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/login.fxml"));
@@ -81,6 +93,12 @@ public class HomeController implements Initializable {
         loginStage.showAndWait();
         collectionList.getItems().clear();
     }
+
+    /**
+     * Opens the export screen
+     * <b>Precondition:</b> user is logged in<br>
+     * <b>Postcondition:</b> export screen is displayed
+     */
     public void openExport() throws IOException{
         Scene exportScene;
         Stage exportStage = new Stage();
@@ -93,6 +111,12 @@ public class HomeController implements Initializable {
         exportStage.setTitle("Exporting...");
         exportStage.showAndWait();
     }
+
+    /**
+     * Opens the import screen
+     * <b>Precondition:</b> user is logged in<br>
+     * <b>Postcondition:</b> export screen is displayed
+     */
     public void openImport() throws IOException{
         Scene importScene;
         Stage importStage = new Stage();
@@ -110,6 +134,11 @@ public class HomeController implements Initializable {
         importStage.showAndWait();
     }
 
+    /**
+     * Updates the displayed entries
+     * <b>Precondition:</b> filter options are selected<br>
+     * <b>Postcondition:</b> list view is updated
+     */
     public void updateView(){
         StringBuilder sb = new StringBuilder();
 
@@ -120,6 +149,12 @@ public class HomeController implements Initializable {
         filters = sb.toString();
         updateListView();
     }
+
+    /**
+     * Updates the collection list
+     * <b>Precondition:</b> user is logged in<br>
+     * <b>Postcondition:</b> list view displays matching entries
+     */
     private void updateListView(){
         collectionList.getItems().clear();
         for (MediaEntry entry : curU.getCollection()){
@@ -128,14 +163,33 @@ public class HomeController implements Initializable {
             else if (entry instanceof Website && filters.contains("w")) collectionList.getItems().add(entry);
         }
     }
+
+    /**
+     * Deletes a media entry
+     * @param entry contains the MediaEntry to delete<br>
+     * <b>Precondition:</b> entry exists in the collection<br>
+     * <b>Postcondition:</b> entry is removed from the collection
+     */
     public void delete(MediaEntry entry){
         collectionList.getItems().remove(entry);
         curU.getCollection().remove(entry);
     }
+
+    /**
+     * Sets the current user
+     * @param curU contains the logged in user<br>
+     * <b>Precondition:</b> user is valid<br>
+     * <b>Postcondition:</b> current user is updated
+     */
     public void setCurU(User curU){
         this.curU = curU;
     }
 
+    /**
+     * Opens the add card game screen
+     * <b>Precondition:</b> user is logged in<br>
+     * <b>Postcondition:</b> add card game screen is displayed
+     */
     public void openAddForCG() throws IOException{
         FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/addEntry.fxml"));
         Scene sc = new Scene(loader.load());
@@ -157,6 +211,11 @@ public class HomeController implements Initializable {
         updateListView();
     }
 
+    /**
+     * Opens the add TV series screen
+     * <b>Precondition:</b> user is logged in<br>
+     * <b>Postcondition:</b> add TV series screen is displayed
+     */
     public void openAddForTV() throws IOException{
         FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/addEntry.fxml"));
         Scene sc = new Scene(loader.load());
@@ -179,6 +238,11 @@ public class HomeController implements Initializable {
         updateListView();
     }
 
+    /**
+     * Opens the add website screen
+     * <b>Precondition:</b> user is logged in<br>
+     * <b>Postcondition:</b> add website screen is displayed
+     */
     public void openAddForWS() throws IOException{
         FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/addEntry.fxml"));
         Scene sc = new Scene(loader.load());
@@ -200,6 +264,11 @@ public class HomeController implements Initializable {
         updateListView();
     }
 
+    /**
+     * Logs out the current user
+     * <b>Precondition:</b> user is logged in<br>
+     * <b>Postcondition:</b> current user is logged out
+     */
     public void logout(){
         showCards.setSelected(false);
         showSeries.setSelected(false);
