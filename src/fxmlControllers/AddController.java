@@ -3,10 +3,7 @@ package fxmlControllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import models.CardGame;
-import models.MediaEntry;
-import models.Status;
-import models.Website;
+import models.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,21 +18,30 @@ public class AddController {
     @FXML public CheckBox standaloneCheck;
     @FXML private Button addButton;
     private ArrayList<MediaEntry> collection;
+    private ArrayList<Expansion> exCol;
     private char type;
 
     public void setCollection(ArrayList<MediaEntry> collection){
         this.collection = collection;
+    }
+    public void setExCol(ArrayList<Expansion> exCol){
+        this.exCol = exCol;
     }
     public void setType(char type){
         this.type = type;
     }
 
     public void addEntry(){
+        Stage cur = (Stage) titleLabel.getScene().getWindow();
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Success!");
         confirm.setHeaderText("New entry created.");
         confirm.setContentText("You may now close this window.");
-        Stage cur = (Stage) titleLabel.getScene().getWindow();
+
+        Alert error = new Alert(Alert.AlertType.ERROR);
+        error.setTitle("Unsuccessful.");
+        error.setHeaderText("Please fill out all fields.");
+        error.setContentText("Entries cannot be made with empty fields.");
 
         switch (type){
             case 'c':
@@ -53,7 +59,7 @@ public class AddController {
                     collection.add(cg);
                     confirm.showAndWait();
                     cur.close();
-                }
+                } else error.show();
                 break;
             case 'w':
                 if (!titleField.getText().isEmpty() && !field2.getText().isEmpty() && !field3.getText().isEmpty()) {
@@ -71,7 +77,24 @@ public class AddController {
                     collection.add(ws);
                     confirm.showAndWait();
                     cur.close();
-                }
+                } else error.show();
+                break;
+            case 'x':
+                if (!titleField.getText().isEmpty() && !field2.getText().isEmpty()) {
+                    String title = titleField.getText();
+                    double price;
+                    try {
+                        price = Double.parseDouble(field2.getText());
+                    } catch (NumberFormatException e){
+                        throw new IllegalArgumentException(e);
+                    }
+                    boolean standalone = standaloneCheck.isSelected();
+
+                    Expansion ex = new Expansion(title, price, Status.PLANNED, standalone);
+                    exCol.add(ex);
+                    confirm.showAndWait();
+                    cur.close();
+                } else error.show();
                 break;
         }
     }

@@ -4,6 +4,7 @@ import init.MyApp;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -57,6 +58,8 @@ public class EntryController implements Initializable {
             detailsList.getItems().add("Publisher: " + ((CardGame) entry).getPublisher());
 
             relatedMediaLabel.setText("Expansion Decks");
+            addSub.setOnAction(this::openAddForEX);
+            addSub.setText("Add an Expansion");
             for (Expansion e : ((CardGame) entry).getExpansions()){
                 containedList.getItems().add(e);
             }
@@ -81,6 +84,15 @@ public class EntryController implements Initializable {
 
             detailsList.getItems().add("URL: " + ((Website) entry).getURL());
             detailsList.getItems().add("Publish Date: " + ((Website) entry).getPublishDate());
+        } else if (entry instanceof Expansion){
+            relatedMediaLabel.setVisible(false);
+            relatedMediaLine.setVisible(false);
+            addSub.setVisible(false);
+            addSub.setDisable(true);
+            containedList.setVisible(false);
+            containedList.setEditable(false);
+
+            detailsList.getItems().add("Price: " + ((Expansion) entry).getPrice());
         }
 
         int rating = entry.getRating();
@@ -127,6 +139,20 @@ public class EntryController implements Initializable {
                 }
             });
         } // TODO: implement for episodes
+    }
+    public void updateContained(){
+        containedList.getItems().clear();
+        if (entry instanceof CardGame){
+            for (Expansion e : ((CardGame) entry).getExpansions()){
+                containedList.getItems().add(e);
+            }
+        } else if (entry instanceof TVSeries){
+            for (ArrayList<Episodes> season : ((TVSeries) entry).getEpisodes()){
+                for (Episodes e : season){
+                    containedList.getItems().add(e);
+                }
+            }
+        }
     }
 
     public void deleteEntry(){
@@ -257,5 +283,30 @@ public class EntryController implements Initializable {
                 setGraphic(null);
             }
         });
+    }
+
+    public void openAddForEX(ActionEvent action){
+        FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/addEntry.fxml"));
+        Scene sc = null;
+        try {
+            sc = new Scene(loader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        AddController add = loader.getController();
+        add.setExCol(((CardGame) entry).getExpansions());
+        add.field2.setPromptText("Input price");
+        add.field3.setOpacity(0.00);
+        add.field3.setManaged(false);
+        add.titleLabel.setText("Add an Expansion");
+        add.setType('x');
+
+        Stage st = new Stage();
+        st.setTitle("Adding an entry...");
+        st.initModality(Modality.APPLICATION_MODAL);
+        st.setScene(sc);
+        st.showAndWait();
+        updateContained();
     }
 }

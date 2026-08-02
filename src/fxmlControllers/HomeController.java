@@ -179,8 +179,4 @@ public class HomeController implements Initializable {
     public void openAddForEP() throws IOException{
 
     }
-
-    public void openAddForEX() throws IOException{
-
-    }
 }
