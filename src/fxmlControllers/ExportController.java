@@ -1,3 +1,7 @@
+/**
+ *
+ */
+
 package fxmlControllers;
 
 import javafx.fxml.FXML;
@@ -12,6 +16,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * MCO2 FILE. DEPRECATED. Was in charge of exporting operations.
+ */
+@Deprecated
 public class ExportController {
     @FXML
     private RadioButton specificMedia;

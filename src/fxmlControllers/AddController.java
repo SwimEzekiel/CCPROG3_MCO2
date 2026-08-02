@@ -1,3 +1,4 @@
+
 package fxmlControllers;
 
 import javafx.fxml.FXML;
@@ -13,6 +14,9 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ MCO2 FILE. In charge of everything related to adding entries.
+ */
 public class AddController {
     //for the GUI
     @FXML public Label titleLabel;
@@ -153,3 +157,4 @@ public class AddController {
         }
     }
 }
+

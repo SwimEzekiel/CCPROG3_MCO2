@@ -7,6 +7,10 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
+/**
+ * MCO2 FILE. DEPRECATED. Was in charge of importing operations before scrapping.
+ */
+@Deprecated
 public class ImportController {
     @FXML
     private Button selectButton;

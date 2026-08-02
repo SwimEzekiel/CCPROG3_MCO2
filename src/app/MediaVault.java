@@ -1,13 +1,5 @@
 package app;
 
-/**
- * Represents the user in the object space.
- * Serves as driver for program until branching logic for user actions are coded.
- *
- * @author Ezekiel Alvarez
- * @author Matthew Alfonso Beltran
- */
-
 import modelControllers.CGController;
 import modelControllers.TVController;
 import modelControllers.WebController;
@@ -21,6 +13,10 @@ import views.UnifiedView;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+/**
+ * MCO1 FILE. Un-refactored, original version of runnable main passed in MCO1.
+ */
+@Deprecated
 public class MediaVault {
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);

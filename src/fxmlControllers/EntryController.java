@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * MCO2 FILE. In charge of displaying the details of an entry and providing means to add, edit, rate, and delete it.
+ */
 public class EntryController implements Initializable {
 
     @FXML private AnchorPane anchor;

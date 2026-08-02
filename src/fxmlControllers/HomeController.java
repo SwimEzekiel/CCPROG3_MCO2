@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * MCO2 FILE. In charge of everything in the home screen of the app.
+ */
 public class HomeController implements Initializable {
 
     // FXML Injections

@@ -7,6 +7,9 @@ import models.User;
 import services.UserService;
 import views.*;
 
+/**
+ * MCO1 FILE. Refactored version of code in MCO1 for readability and speed.
+ */
 public class NewUserRefactor {
     public static void main(String[] args){
         Display currentDisplay = Display.LOGIN;

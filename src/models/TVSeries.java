@@ -28,7 +28,7 @@ public class TVSeries extends MediaEntry{
      * @param status stores the status of the new Website.
      *
      * <b>Precondition:</b>
-     * <pre style="tab-size:4";>
+     * <pre style="tab-size:4;">
      * status may only be PLANNED or IN_PROGRESS.<br>
      * params must be valid per their data type.<br>
      * </pre>

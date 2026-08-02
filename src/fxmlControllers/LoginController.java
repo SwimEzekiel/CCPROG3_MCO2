@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 import models.User;
 import services.UserService;
 
+/**
+ * MCO2 FILE. In charge of all login operations.
+ */
 public class LoginController {
     @FXML private TextField userIDField;
     @FXML private PasswordField pwField;

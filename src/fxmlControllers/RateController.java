@@ -9,6 +9,9 @@ import models.MediaEntry;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * MCO2 FILE. In charge of gathering, verifying, and giving reviews to entries.
+ */
 public class RateController implements Initializable {
     @FXML private Spinner<Integer> ratingSpinner;
     @FXML private TextArea reviewArea;
