@@ -1,19 +1,21 @@
 package fxmlControllers;
 
+import init.MyApp;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.*;
 
-import java.net.URL;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
-public class EntryController implements Initializable {
+public class EntryController{
 
     @FXML private AnchorPane anchor;
     @FXML private Label titleLabel;
@@ -36,10 +38,10 @@ public class EntryController implements Initializable {
     }
     public void setEntry(MediaEntry entry){
         this.entry = entry;
-        updateView();
+        updateDetails();
     }
 
-    private void updateView(){
+    private void updateDetails(){
         if (entry instanceof CardGame){
             detailsList.getItems().add("Price: " + ((CardGame) entry).getPrice());
             detailsList.getItems().add("Publisher: " + ((CardGame) entry).getPublisher());
@@ -83,11 +85,6 @@ public class EntryController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-
     public void deleteEntry(){
         Stage cur = (Stage) anchor.getScene().getWindow();
         Alert warnDel = new Alert(Alert.AlertType.WARNING);
@@ -102,5 +99,24 @@ public class EntryController implements Initializable {
             cur.close();
         }
         else System.out.println("Deletion cancelled!");
+    }
+
+    public void openRate() throws IOException {
+        FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/rateEntry.fxml"));
+        Scene sc = new Scene(loader.load());
+        Stage st = new Stage();
+        RateController rate = loader.getController();
+
+        rate.setEntry(entry);
+        st.setScene(sc);
+        st.initModality(Modality.APPLICATION_MODAL);
+        st.showAndWait();
+        if (entry.getRating() != -1) updateRating();
+    }
+    private void updateRating(){
+        ratingLabel.setText(String.valueOf(entry.getRating()));
+        reviewArea.setText(entry.getReview());
+        ratingButton.setDisable(true);
+        ratingButton.setOpacity(0.00);
     }
 }
