@@ -26,9 +26,9 @@
           </Menu>
           <Menu mnemonicParsing="false" text="View">
                <items>
-                  <CheckMenuItem mnemonicParsing="false" text="Show card games" />
-                  <CheckMenuItem mnemonicParsing="false" text="Show TV series" />
-                  <CheckMenuItem mnemonicParsing="false" text="Show websites" />
+                  <CheckMenuItem fx:id="showCards" mnemonicParsing="false" onAction="#updateView" text="Show card games" />
+                  <CheckMenuItem fx:id="showSeries" mnemonicParsing="false" onAction="#updateView" text="Show TV series" />
+                  <CheckMenuItem fx:id="showSites" mnemonicParsing="false" onAction="#updateView" text="Show websites" />
                </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Share">

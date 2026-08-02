@@ -2,14 +2,21 @@ package services;
 
 import models.User;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserService {
     private ArrayList<User> users = new ArrayList<>();
+    private HashMap<Integer, Integer> IDtoAccNum = new HashMap<>();
 
     public UserService(){
-        users.add(new User(731, "Ezekiel"));
-        users.add(new User(1011, "Fonsi"));
-        users.add(new User(1, "JohnTobyA.Pickavant"));
+        IDtoAccNum.put(731, 0);
+        IDtoAccNum.put(1011, 1);
+        IDtoAccNum.put(1, 2);
+
+        users.add(new User(731, "Ezekiel", 0));
+        users.add(new User(1011, "Fonsi", 1));
+        users.add(new User(1, "JohnTobyA.Pickavant", 2));
+
     }
 
     public User login(int id, String password){

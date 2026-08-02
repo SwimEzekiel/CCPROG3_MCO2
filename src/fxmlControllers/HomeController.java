@@ -7,10 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ListView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import models.User;
+import models.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,8 +20,10 @@ import java.util.ResourceBundle;
 public class HomeController implements Initializable {
 
     // FXML Injections
-    @FXML
-    private ListView<String> collectionList;
+    @FXML private ListView<String> collectionList;
+    @FXML private CheckMenuItem showCards;
+    @FXML private CheckMenuItem showSeries;
+    @FXML private CheckMenuItem showSites;
 
     // Other windows
     private Scene loginScene;
@@ -29,13 +32,10 @@ public class HomeController implements Initializable {
     // Attributes
     private User curU;
     private String cur;
+    private String filters;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Initialize list view
-        for (int i = 0; i < 10; i++) {
-            collectionList.getItems().add("Placeholder " + i);
-        }
         // Prepare detailed entry screen
         collectionList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>(){
             @Override
@@ -74,7 +74,7 @@ public class HomeController implements Initializable {
         loginStage.initModality(Modality.APPLICATION_MODAL);
         loginStage.setScene(loginScene);
         loginStage.showAndWait();
-        if (curU != null) System.out.println("User: " + curU.getUserID());
+        collectionList.getItems().clear();
     }
     public void openExport() throws IOException{
         Scene exportScene;
@@ -105,6 +105,34 @@ public class HomeController implements Initializable {
         importStage.showAndWait();
     }
 
+    public void updateView(){
+        StringBuilder sb = new StringBuilder();
+
+        if (showCards.isSelected()) sb.append('c');
+        if (showSeries.isSelected()) sb.append('t');
+        if (showSites.isSelected()) sb.append('w');
+
+        filters = sb.toString();
+        updateListView();
+    }
+    private void updateListView(){
+        collectionList.getItems().clear();
+        if (filters.contains("c")){
+            for (CardGame entry : curU.getCollection().getCGCollection()){
+                collectionList.getItems().add(entry.getTitle());
+            }
+        }
+        if (filters.contains("t")){
+            for (TVSeries entry : curU.getCollection().getTVCollection()){
+                collectionList.getItems().add(entry.getTitle());
+            }
+        }
+        if (filters.contains("w")){
+            for (Website entry : curU.getCollection().getWSCollection()){
+                collectionList.getItems().add(entry.getTitle());
+            }
+        }
+    }
     public void delete(String placeholder){
         collectionList.getItems().remove(placeholder);
     }

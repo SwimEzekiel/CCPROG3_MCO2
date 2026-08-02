@@ -12,10 +12,10 @@ public class User {
     private Collection collection;
 
     //Constructor
-    public User(int userID, String userPassword){
+    public User(int userID, String userPassword, int accNum){
         this.userID = userID;
         this.userPassword = userPassword;
-        collection = new Collection();
+        collection = new Collection(accNum);
     }
     //Getters
     public int getUserID(){
