@@ -51,9 +51,10 @@ public class HomeController implements Initializable {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                viewEntryStage = new Stage();
                 EntryController entry = loader.getController();
                 entry.setTitle(cur);
+                entry.setEntry(findEntry(cur));
+                viewEntryStage = new Stage();
                 viewEntryStage.setTitle("Detailed View");
                 viewEntryStage.setScene(viewEntryScene);
                 viewEntryStage.show();
@@ -61,6 +62,19 @@ public class HomeController implements Initializable {
         });
     }
 
+    private MediaEntry findEntry(String name){
+        for (CardGame cg : curU.getCollection().getCGCollection()){
+            System.out.println(cg.getTitle());
+            if (cg.getTitle().equals(name)) return cg;
+        }
+        for (TVSeries tv : curU.getCollection().getTVCollection()){
+            if (tv.getTitle().equals(name)) return tv;
+        }
+        for (Website w : curU.getCollection().getWSCollection()){
+            if (w.getTitle().equals(name)) return w;
+        }
+        return null;
+    }
     public void login() throws IOException{
         // Prepare login screen
         FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/login.fxml"));
