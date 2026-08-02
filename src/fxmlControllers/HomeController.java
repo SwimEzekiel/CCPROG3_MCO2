@@ -116,30 +116,15 @@ public class HomeController implements Initializable {
     }
     private void updateListView(){
         collectionList.getItems().clear();
-        if (filters.contains("c")){
-            for (CardGame entry : curU.getCollection().getCGCollection()){
-                collectionList.getItems().add(entry);
-            }
-        }
-        if (filters.contains("t")){
-            for (TVSeries entry : curU.getCollection().getTVCollection()){
-                collectionList.getItems().add(entry);
-            }
-        }
-        if (filters.contains("w")){
-            for (Website entry : curU.getCollection().getWSCollection()){
-                collectionList.getItems().add(entry);
-            }
+        for (MediaEntry entry : curU.getCollection()){
+            if (entry instanceof CardGame && filters.contains("c")) collectionList.getItems().add(entry);
+            else if (entry instanceof TVSeries && filters.contains("t")) collectionList.getItems().add(entry);
+            else if (entry instanceof Website && filters.contains("w")) collectionList.getItems().add(entry);
         }
     }
     public void delete(MediaEntry entry){
         collectionList.getItems().remove(entry);
-        switch (entry) {
-            case CardGame cardGame -> curU.getCollection().getCGCollection().remove(entry);
-            case TVSeries tvSeries -> curU.getCollection().getTVCollection().remove(entry);
-            case Website website -> curU.getCollection().getWSCollection().remove(entry);
-            case null, default -> System.out.println("UN QUE?");
-        }
+        curU.getCollection().remove(entry);
     }
     public void setCurU(User curU){
         this.curU = curU;
