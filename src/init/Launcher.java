@@ -7,8 +7,3 @@ public class Launcher {
         Application.launch(MyApp.class, args);
     }
 }
-
-/*
-    TODO: Implement rate.
-    TODO: Implement edit and add.
- */

@@ -4,6 +4,7 @@ import init.MyApp;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,6 +35,7 @@ public class EntryController implements Initializable {
     @FXML private Line relatedMediaLine;
     @FXML private Button addSub;
     private MediaEntry entry;
+    private MediaEntry selSub;
     private HomeController home;
     private EntryController container;
 
@@ -47,6 +49,9 @@ public class EntryController implements Initializable {
         this.entry = entry;
         updateDetails();
     }
+    public void setSelSub(MediaEntry selSub){
+        this.selSub = selSub;
+    }
     public void setContainer(EntryController container){
         this.container = container;
     }
@@ -57,6 +62,8 @@ public class EntryController implements Initializable {
             detailsList.getItems().add("Publisher: " + ((CardGame) entry).getPublisher());
 
             relatedMediaLabel.setText("Expansion Decks");
+            addSub.setOnAction(this::openAddForEX);
+            addSub.setText("Add an Expansion");
             for (Expansion e : ((CardGame) entry).getExpansions()){
                 containedList.getItems().add(e);
             }
@@ -65,6 +72,7 @@ public class EntryController implements Initializable {
             detailsList.getItems().add("Year Released: " + ((TVSeries) entry).getYearReleased());
 
             relatedMediaLabel.setText("Episodes");
+            addSub.setOnAction(this::openAddForEP);
             addSub.setText("Add an Episode");
             for (ArrayList<Episodes> season : ((TVSeries) entry).getEpisodes()){
                 for (Episodes e : season){
@@ -81,6 +89,24 @@ public class EntryController implements Initializable {
 
             detailsList.getItems().add("URL: " + ((Website) entry).getURL());
             detailsList.getItems().add("Publish Date: " + ((Website) entry).getPublishDate());
+        } else if (entry instanceof Expansion){
+            relatedMediaLabel.setVisible(false);
+            relatedMediaLine.setVisible(false);
+            addSub.setVisible(false);
+            addSub.setDisable(true);
+            containedList.setVisible(false);
+            containedList.setEditable(false);
+
+            detailsList.getItems().add("Price: " + ((Expansion) entry).getPrice());
+        } else if (entry instanceof Episodes){
+            relatedMediaLabel.setVisible(false);
+            relatedMediaLine.setVisible(false);
+            addSub.setVisible(false);
+            addSub.setDisable(true);
+            containedList.setVisible(false);
+            containedList.setEditable(false);
+
+            detailsList.getItems().add("Runtime (in mins): " + ((Episodes) entry).getRunTime());
         }
 
         int rating = entry.getRating();
@@ -117,6 +143,7 @@ public class EntryController implements Initializable {
                     Stage st = new Stage();
 
                     EntryController ec = loader.getController();
+                    ec.setSelSub(sel);
                     ec.setContainer(EntryController.this);
                     ec.setTitleLabel(sel.getTitle());
                     ec.setEntry(sel);
@@ -126,6 +153,45 @@ public class EntryController implements Initializable {
                     st.showAndWait();
                 }
             });
+        } else if (entry instanceof TVSeries && !((TVSeries) entry).getEpisodes().isEmpty()){
+            containedList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MediaEntry>(){
+                @Override
+                public void changed(ObservableValue<? extends MediaEntry> observableValue, MediaEntry mediaEntry, MediaEntry t1) {
+                    Episodes sel = (Episodes) containedList.getSelectionModel().getSelectedItem();
+                    FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/viewEntry.fxml"));
+                    Scene sc;
+                    try {
+                        sc = new Scene(loader.load());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Stage st = new Stage();
+
+                    EntryController ec = loader.getController();
+                    ec.setSelSub(sel);
+                    ec.setContainer(EntryController.this);
+                    ec.setTitleLabel(sel.getTitle());
+                    ec.setEntry(sel);
+
+                    st.initModality(Modality.APPLICATION_MODAL);
+                    st.setScene(sc);
+                    st.showAndWait();
+                }
+            });
+        }
+    }
+    public void updateContained(){
+        containedList.getItems().clear();
+        if (entry instanceof CardGame){
+            for (Expansion e : ((CardGame) entry).getExpansions()){
+                containedList.getItems().add(e);
+            }
+        } else if (entry instanceof TVSeries){
+            for (ArrayList<Episodes> season : ((TVSeries) entry).getEpisodes()){
+                for (Episodes e : season){
+                    containedList.getItems().add(e);
+                }
+            }
         }
     }
 
@@ -138,11 +204,22 @@ public class EntryController implements Initializable {
         Optional<ButtonType> choice = warnDel.showAndWait();
 
         if (choice.isPresent() && choice.get() == ButtonType.OK) {
-            System.out.println("Entry deleted!");
-            home.delete(entry);
+            if (home != null) {
+                home.delete(entry);
+            }
+            else if (container != null) {
+                container.delete(selSub);
+                container.updateContained();
+            }
             cur.close();
         }
-        else System.out.println("Deletion cancelled!");
+    }
+    public void delete(MediaEntry sub){
+        if (sub instanceof Expansion) ((CardGame) entry).getExpansions().remove(sub);
+        else if (sub instanceof Episodes) {
+            for (ArrayList<Episodes> season : ((TVSeries) entry).getEpisodes())
+                season.remove(sub);
+        }
     }
 
     public void openRate() throws IOException {
@@ -257,5 +334,56 @@ public class EntryController implements Initializable {
                 setGraphic(null);
             }
         });
+    }
+
+    public void openAddForEX(ActionEvent action){
+        FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/addEntry.fxml"));
+        Scene sc = null;
+        try {
+            sc = new Scene(loader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        AddController add = loader.getController();
+        add.setExCol(((CardGame) entry).getExpansions());
+        add.field2.setPromptText("Input price");
+        add.field3.setOpacity(0.00);
+        add.field3.setManaged(false);
+        add.titleLabel.setText("Add an Expansion");
+        add.setType('x');
+
+        Stage st = new Stage();
+        st.setTitle("Adding an entry...");
+        st.initModality(Modality.APPLICATION_MODAL);
+        st.setScene(sc);
+        st.showAndWait();
+        updateContained();
+    }
+
+    public void openAddForEP(ActionEvent action){
+        FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/addEntry.fxml"));
+        Scene sc = null;
+        try {
+            sc = new Scene(loader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        AddController add = loader.getController();
+        add.setEpCol(((TVSeries) entry).getEpisodes());
+        add.field2.setPromptText("Input runtime");
+        add.field3.setOpacity(0.00);
+        add.field3.setManaged(false);
+        add.titleLabel.setText("Add an Episode");
+        add.initializeSpinner();
+        add.setType('p');
+
+        Stage st = new Stage();
+        st.setTitle("Adding an entry...");
+        st.initModality(Modality.APPLICATION_MODAL);
+        st.setScene(sc);
+        st.showAndWait();
+        updateContained();
     }
 }
