@@ -48,7 +48,7 @@ public class HomeController implements Initializable {
                     throw new RuntimeException(e);
                 }
                 EntryController entry = loader.getController();
-                entry.setTitle(cur.getTitle());
+                entry.setTitleLabel(cur.getTitle());
                 entry.setEntry(cur);
                 entry.setHome(HomeController.this);
                 viewEntryStage = new Stage();

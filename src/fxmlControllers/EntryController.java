@@ -1,6 +1,8 @@
 package fxmlControllers;
 
 import init.MyApp;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,15 +28,16 @@ public class EntryController implements Initializable {
     @FXML private Label ratingLabel;
     @FXML private TextArea reviewArea;
     @FXML private ListView<String> detailsList;
-    @FXML private ListView<String> containedList;
+    @FXML private ListView<MediaEntry> containedList;
     @FXML private Label relatedMediaLabel;
     @FXML private Button ratingButton;
     @FXML private Line relatedMediaLine;
     @FXML private Button addSub;
     private MediaEntry entry;
     private HomeController home;
+    private EntryController container;
 
-    public void setTitle(String titleLabel){
+    public void setTitleLabel(String titleLabel){
         this.titleLabel.setText(titleLabel);
     }
     public void setHome(HomeController home){
@@ -44,6 +47,9 @@ public class EntryController implements Initializable {
         this.entry = entry;
         updateDetails();
     }
+    public void setContainer(EntryController container){
+        this.container = container;
+    }
 
     private void updateDetails(){
         if (entry instanceof CardGame){
@@ -52,7 +58,7 @@ public class EntryController implements Initializable {
 
             relatedMediaLabel.setText("Expansion Decks");
             for (Expansion e : ((CardGame) entry).getExpansions()){
-                containedList.getItems().add(e.getTitle());
+                containedList.getItems().add(e);
             }
         } else if (entry instanceof TVSeries){
             detailsList.getItems().add("Author: " + ((TVSeries) entry).getAuthor());
@@ -62,7 +68,7 @@ public class EntryController implements Initializable {
             addSub.setText("Add an Episode");
             for (ArrayList<Episodes> season : ((TVSeries) entry).getEpisodes()){
                 for (Episodes e : season){
-                    containedList.getItems().add(e.getTitle());
+                    containedList.getItems().add(e);
                 }
             }
         } else if (entry instanceof Website){
@@ -89,12 +95,37 @@ public class EntryController implements Initializable {
         });
 
         if (rating != -1) ratingLabel.setText(String.valueOf(rating));
-        if (review != null) {
+        if (review != null && !review.isEmpty()) {
             ratingButton.setOpacity(0.00);
             ratingButton.setDisable(true);
             reviewArea.setText(review);
-        } else {
-            reviewArea.setOpacity(0.00);
+            reviewArea.setOpacity(1.00);
+        }
+
+        if (entry instanceof CardGame && !((CardGame) entry).getExpansions().isEmpty()){
+            containedList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MediaEntry>(){
+                @Override
+                public void changed(ObservableValue<? extends MediaEntry> observableValue, MediaEntry mediaEntry, MediaEntry t1) {
+                    Expansion sel = (Expansion) containedList.getSelectionModel().getSelectedItem();
+                    FXMLLoader loader = new FXMLLoader(MyApp.class.getResource("/viewEntry.fxml"));
+                    Scene sc;
+                    try {
+                        sc = new Scene(loader.load());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Stage st = new Stage();
+
+                    EntryController ec = loader.getController();
+                    ec.setContainer(EntryController.this);
+                    ec.setTitleLabel(sel.getTitle());
+                    ec.setEntry(sel);
+
+                    st.initModality(Modality.APPLICATION_MODAL);
+                    st.setScene(sc);
+                    st.showAndWait();
+                }
+            });
         }
     }
 
@@ -129,6 +160,7 @@ public class EntryController implements Initializable {
     private void updateRating(){
         ratingLabel.setText(String.valueOf(entry.getRating()));
         reviewArea.setText(entry.getReview());
+        reviewArea.setOpacity(1.00);
         ratingButton.setDisable(true);
         ratingButton.setOpacity(0.00);
     }

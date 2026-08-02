@@ -39,7 +39,7 @@ public class RateController implements Initializable {
         err.setHeaderText("Review not given.");
         err.setContentText("Please give a few words about the media you consumed!");
 
-        if (!reviewArea.getText().isEmpty()){
+        if (reviewArea.getText().isEmpty()){
             err.showAndWait();
         } else {
             entry.setRating(ratingSpinner.getValue());

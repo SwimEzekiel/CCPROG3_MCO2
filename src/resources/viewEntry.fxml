@@ -48,7 +48,7 @@
             <Font name="Impact" size="18.0" />
          </font>
       </Label>
-      <TextArea fx:id="reviewArea" editable="false" layoutX="135.0" layoutY="81.0" prefHeight="101.0" prefWidth="339.0" />
+      <TextArea fx:id="reviewArea" editable="false" layoutX="135.0" layoutY="81.0" opacity="0.0" prefHeight="101.0" prefWidth="339.0" />
       <Button fx:id="ratingButton" layoutX="265.0" layoutY="121.0" mnemonicParsing="false" onAction="#openRate" style="-fx-background-color: #545454;" text="Give a Rating" textFill="WHITE" underline="true">
          <font>
             <Font name="Impact" size="12.0" />
