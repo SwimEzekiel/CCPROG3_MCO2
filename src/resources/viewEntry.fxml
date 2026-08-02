@@ -34,7 +34,7 @@
             <Font name="Impact" size="20.0" />
          </font>
       </Label>
-      <Line endX="367.0" layoutX="116.0" layoutY="419.0" startX="-100.0" stroke="WHITE" strokeWidth="3.0" />
+      <Line fx:id="relatedMediaLine" endX="367.0" layoutX="116.0" layoutY="419.0" startX="-100.0" stroke="WHITE" strokeWidth="3.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b4b4b4" height="113.0" layoutX="14.0" layoutY="76.0" stroke="#b4b4b4" strokeType="INSIDE" width="470.0" />
       <Line endX="9.111129760742188" endY="98.11111450195312" layoutX="116.0" layoutY="83.0" startX="9.111129760742188" strokeWidth="3.0" />
       <Label fx:id="ratingLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="64.0" prefHeight="126.0" prefWidth="81.0" text="--" textFill="#636b2f">
@@ -48,6 +48,7 @@
             <Font name="Impact" size="18.0" />
          </font>
       </Label>
+      <TextArea fx:id="reviewArea" editable="false" layoutX="135.0" layoutY="81.0" prefHeight="101.0" prefWidth="339.0" />
       <Button fx:id="ratingButton" layoutX="265.0" layoutY="121.0" mnemonicParsing="false" style="-fx-background-color: #545454;" text="Give a Rating" textFill="WHITE" underline="true">
          <font>
             <Font name="Impact" size="12.0" />
@@ -60,6 +61,10 @@
             <Font name="Impact" size="12.0" />
          </font>
       </Button>
-      <TextArea fx:id="reviewArea" editable="false" layoutX="135.0" layoutY="81.0" prefHeight="101.0" prefWidth="339.0" />
+      <Button fx:id="addSub" layoutX="395.0" layoutY="392.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="90.0" style="-fx-background-color: #636b2f;" text="Add an expansion" textFill="WHITE">
+         <font>
+            <Font name="Impact" size="10.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
